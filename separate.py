@@ -777,7 +777,7 @@ class SeperateMDXC(SeperateAttributes):
             step = int(overlap * self.roformer_config.audio.sample_rate)
             
             # Create a weighting table and convert it to a PyTorch tensor
-            window = torch.tensor(signal.hamming(C), dtype=torch.float32)
+            window = torch.tensor(signal.windows.hamming(C), dtype=torch.float32)
 
             device = next(model.parameters()).device
             # Transfer to the weighting plate for the same device as the other tensors
