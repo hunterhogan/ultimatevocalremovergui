@@ -1,5 +1,5 @@
-# Python <=3.10 for torch-directml/torch_directml, playsound, Dora
-# Python <=3.11 for deprecated `imp`, Dora/sklearn needs env variable 
+# Python == 3.9.8 might be the best
+# Python <=3.10 for torch-directml/torch_directml, playsound
 altgraph>=0.17.3
 audioread>=3.0.0
 certifi>=2022.12.07
