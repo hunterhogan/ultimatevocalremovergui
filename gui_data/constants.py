@@ -1501,6 +1501,7 @@ REMOVE_SAVED_ENSEMBLE_TEXT = 'Remove Saved Ensemble'
 REPORT_ISSUE_TEXT = 'Report Issue'
 RESET_ALL_SETTINGS_TO_DEFAULT_TEXT = 'Reset All Settings to Default'
 RESTART_APPLICATION_TEXT = 'Restart Application'
+ROFORMER_MODEL_TEXT = "Roformer Model"
 SAMPLE_CLIP_DURATION_TEXT = 'Sample Clip Duration'
 SAVE_ALIGNED_TRACK_TEXT = 'Save Aligned Track'
 SAVE_ALL_OUTPUTS_TEXT = 'Save All Outputs'
