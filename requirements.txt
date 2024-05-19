@@ -55,3 +55,4 @@ asteroid>=0.7.0
 scikit-learn
 xformers==0.0.17
 dora-search
+chardet
