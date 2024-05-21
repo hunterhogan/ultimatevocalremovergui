@@ -45,7 +45,7 @@ from kthread import KThread
 from lib_v5 import spec_utils
 from pathlib  import Path
 from separate import (
-    SeperateDemucs, SeperateMDX, SeperateMDXC, SeperateVR,  # Model-related
+    SeparateDemucs, SeparateMDX, SeparateMDXC, SeparateVR,  # Model-related
     save_format, clear_gpu_cache,  # Utility functions
     cuda_available, directml_available, mps_available
 )
@@ -1478,6 +1478,7 @@ class MainWindow(TkinterDnD.Tk if is_dnd_compatible else tk.Tk):
         self.demucs_name_select_MAPPER = load_model_hash_data(DEMUCS_MODEL_NAME_SELECT)
         self.is_gpu_available = is_gpu_available
         self.is_process_stopped = False
+        self.lastDir = {dialoge_type: None for dialoge_type in [SINGLE_FILE, MAIN_MULTIPLE_FILE, MULTIPLE_FILE, CHOOSE_EXPORT_DIR,]}
         self.inputs_from_dir = []
         self.iteration = 0
         self.true_model_count = 0
@@ -2171,7 +2172,7 @@ class MainWindow(TkinterDnD.Tk if is_dnd_compatible else tk.Tk):
         parent_win = root
         is_linux = not is_windows and not is_macos
 
-        lastDir = self.lastDir.get(dialoge_type)
+        lastDir = self.lastDir.get(dialoge_type, None)        
         
         if is_linux:
             self.linux_filebox_fix()
@@ -6701,13 +6702,13 @@ class MainWindow(TkinterDnD.Tk if is_dnd_compatible else tk.Tk):
                                     'is_4_stem_ensemble': True if self.ensemble_main_stem_var.get() in [FOUR_STEM_ENSEMBLE, MULTI_STEM_ENSEMBLE] and is_ensemble else False}
                     
                     if current_model.process_method == VR_ARCH_TYPE:
-                        seperator = SeperateVR(current_model, process_data)
+                        seperator = SeparateVR(current_model, process_data)
                     if current_model.process_method == MDX_ARCH_TYPE:
-                        seperator = SeperateMDXC(current_model, process_data) if current_model.is_mdx_c else SeperateMDX(current_model, process_data)
+                        seperator = SeparateMDXC(current_model, process_data) if current_model.is_mdx_c else SeparateMDX(current_model, process_data)
                     if current_model.process_method == DEMUCS_ARCH_TYPE:
-                        seperator = SeperateDemucs(current_model, process_data)
+                        seperator = SeparateDemucs(current_model, process_data)
                         
-                    seperator.seperate()
+                    seperator.separate()
                     
                     if is_ensemble:
                         self.command_Text.write('\n')

@@ -68,7 +68,7 @@ def clear_gpu_cache():
 warnings.filterwarnings("ignore")
 cpu = torch.device('cpu')
 
-class SeperateAttributes:
+class SeparateAttributes:
     def __init__(self, model_data: ModelData, 
                  process_data: dict, 
                  main_model_primary_stem_4_stem=None, 
@@ -476,9 +476,9 @@ class SeperateAttributes:
 
         return source
 
-class SeperateMDX(SeperateAttributes):        
+class SeparateMDX(SeparateAttributes):        
 
-    def seperate(self):
+    def separate(self):
         samplerate = 44100
     
         if self.primary_model_name == self.model_basename and isinstance(self.primary_sources, tuple):
@@ -643,9 +643,9 @@ class SeperateMDX(SeperateAttributes):
 
         return self.stft.inverse(torch.tensor(spec_pred).to(self.device)).cpu().detach().numpy()
 
-class SeperateMDXC(SeperateAttributes):        
+class SeparateMDXC(SeparateAttributes):        
 
-    def seperate(self):
+    def separate(self):
         self.is_vocal_main_target = True if self.mdx_c_configs.training.target_instrument == VOCAL_STEM else False
         samplerate = 44100
         sources = None
@@ -874,8 +874,8 @@ class SeperateMDXC(SeperateAttributes):
 
             return pitch_fix(est_s) if self.is_pitch_change else est_s
 
-class SeperateDemucs(SeperateAttributes):
-    def seperate(self):
+class SeparateDemucs(SeparateAttributes):
+    def separate(self):
         samplerate = 44100
         source = None
         model_scale = None
@@ -1100,9 +1100,9 @@ class SeperateDemucs(SeperateAttributes):
                         
         return sources
 
-class SeperateVR(SeperateAttributes):        
+class SeparateVR(SeparateAttributes):        
 
-    def seperate(self):
+    def separate(self):
         if self.primary_model_name == self.model_basename and isinstance(self.primary_sources, tuple):
             y_spec, v_spec = self.primary_sources
             self.load_cached_sources()
@@ -1300,16 +1300,16 @@ def process_secondary_model(secondary_model: ModelData,
         process_iteration()
     
     if secondary_model.process_method == VR_ARCH_TYPE:
-        seperator = SeperateVR(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, main_model_primary=main_model_primary)
+        seperator = SeparateVR(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, main_model_primary=main_model_primary)
     if secondary_model.process_method == MDX_ARCH_TYPE:
         if secondary_model.is_mdx_c:
-            seperator = SeperateMDXC(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, is_return_dual=is_return_dual, main_model_primary=main_model_primary)
+            seperator = SeparateMDXC(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, is_return_dual=is_return_dual, main_model_primary=main_model_primary)
         else:
-            seperator = SeperateMDX(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, main_model_primary=main_model_primary)
+            seperator = SeparateMDX(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, main_model_primary=main_model_primary)
     if secondary_model.process_method == DEMUCS_ARCH_TYPE:
-        seperator = SeperateDemucs(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, is_return_dual=is_return_dual, main_model_primary=main_model_primary)
+        seperator = SeparateDemucs(secondary_model, process_data, main_model_primary_stem_4_stem=main_model_primary_stem_4_stem, main_process_method=main_process_method, is_return_dual=is_return_dual, main_model_primary=main_model_primary)
         
-    secondary_sources = seperator.seperate()
+    secondary_sources = seperator.separate()
 
     if type(secondary_sources) is dict and not is_source_load and not is_pre_proc_model:
         return gather_sources(secondary_model.primary_model_primary_stem, secondary_stem(secondary_model.primary_model_primary_stem), secondary_sources)
@@ -1333,16 +1333,16 @@ def process_chain_model(secondary_model: ModelData,
     vocal_stem_path = [vocal_source, os.path.splitext(os.path.basename(vocal_stem_path))[0]]
 
     if secondary_model.process_method == VR_ARCH_TYPE:
-        seperator = SeperateVR(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
+        seperator = SeparateVR(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
     if secondary_model.process_method == MDX_ARCH_TYPE:
         if secondary_model.is_mdx_c:
-            seperator = SeperateMDXC(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
+            seperator = SeparateMDXC(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
         else:
-            seperator = SeperateMDX(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
+            seperator = SeparateMDX(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
     if secondary_model.process_method == DEMUCS_ARCH_TYPE:
-        seperator = SeperateDemucs(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
+        seperator = SeparateDemucs(secondary_model, process_data, vocal_stem_path=vocal_stem_path, master_inst_source=master_inst_source, master_vocal_source=master_vocal_source)
         
-    secondary_sources = seperator.seperate()
+    secondary_sources = seperator.separate()
     
     if type(secondary_sources) is dict:
         return secondary_sources
