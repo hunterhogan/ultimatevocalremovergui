@@ -389,7 +389,7 @@ class MelBandRoformer(Module):
 
         original_device = raw_audio.device
         x_is_mps = True if original_device.type == 'mps' else False
-        
+
         if x_is_mps:
             raw_audio = raw_audio.cpu()
 
@@ -519,7 +519,7 @@ class MelBandRoformer(Module):
             return total_loss
 
         # If detailed loss breakdown is requested, ensure all components are on the original device
-        return total_loss, (loss.to(original_device) if x_is_mps else loss, 
+        return total_loss, (loss.to(original_device) if x_is_mps else loss,
                             multi_stft_resolution_loss.to(original_device) if x_is_mps else multi_stft_resolution_loss)
 
         # if not return_loss_breakdown:
