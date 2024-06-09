@@ -118,7 +118,9 @@ cython_debug/
 *.code-workspace
 
 # Data downloads
-models/
+models/Demucs_Models/
+models/VR_Models/
+models/MDX_Net_Models/
 
 # App data
 data.pkl
